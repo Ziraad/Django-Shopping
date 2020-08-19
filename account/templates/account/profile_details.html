@@ -1,0 +1,141 @@
+{% extends 'accounts/base_accounts.html' %}
+{% load static %}
+{% block title %}{{ profile }}{% endblock %}
+{% block toolbar_title %}
+    <i class="fas fa-user"></i>
+    نمایه
+{% endblock %}
+{% block toolbar_button %}
+    <a class="btn btn-light py-1 px-2" href="{% url 'ticketing:movie_list' %}">
+    <i class="fas fa-film"></i>
+        فیلم ها
+    </a>
+    <a class="btn btn-light py-1 px-2" href="{% url 'ticketing:cinema_list' %}">
+        سینماها
+    </a>
+    <a class="btn btn-success py-1 px-2" href="{% url 'ticketing:showtime_list' %}">
+    <i class="fas fa-ticket-alt"></i>
+    خرید بلیت
+    </a>
+    {% if user.is_authenticated %}
+        <div class="dropdown py-1 px-2">
+          <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user"></i>
+              {{ user.get_full_name }}
+          </a>
+
+          <div class="dropdown-menu text-right" aria-labelledby="dropdownMenuLink">
+              <span class="dropdown-item" href="#">
+                <i class="fas fa-coins"></i>
+                اعتبار:
+                {{ profile.balance }}
+                  تومان
+            </span>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'accounts:profile_details' %}">
+                <i class="far fa-address-card"></i>
+                نمایه کاربری
+            </a>
+              <a class="dropdown-item" href="{% url 'ticketing:ticket_list' %}">
+                <i class="fas fa-ticket-alt"></i>
+                بلیت های من
+            </a>
+               <a class="dropdown-item" href="{% url 'accounts:payment_list' %}">
+            <i class="fa fa-receipt"></i>
+            پرداخت های من
+            </a>
+            <a class="dropdown-item" href="{% url 'accounts:logout' %}">
+                <i class="fas fa-sign-out-alt"></i>
+                خروج
+            </a>
+          </div>
+        </div>
+    {% else %}
+        <a class="btn btn-primary py-1 px-2 mr-3" href="{% url 'accounts:login' %}">
+            <i class="fas fa-sign-in-alt"></i>
+            ورود
+        </a>
+    {% endif %}
+
+{% endblock %}
+{% block content %}
+    <div class="row py-3">
+        <div class="col-8 item-details">
+            <div class="row px-3">
+                <div class="col-4">
+                    <small class="text-muted">
+                        <i class="fas fa-address-card"></i>
+                        نام و نام خانوادگی :
+                    </small>
+                </div>
+                <div class="col-8">
+                    {{profile.user.get_full_name}}
+                </div>
+                <div class="w-100 my-1"></div>
+                <div class="col-4">
+                    <small class="text-muted">
+                        <i class="fas fa-birthday-cake"></i>
+                     تاریخ تولد :
+                    </small>
+                </div>
+                <div class="col-8">
+                    {{ profile.birth_day |date:'Y/n/j' }}
+                </div>
+                <div class="w-100 my-1"></div>
+                <div class="col-4">
+                    <small class="text-muted">
+                        <i class="fas fa-mobile-alt"></i>
+                        تلفن همراه :
+                    </small>
+                </div>
+                <div class="col-8">
+                    {{profile.mobile}}
+                </div>
+                <div class="w-100 my-1"></div>
+                <div class="col-4">
+                    <small class="text-muted">
+                        <i class="fas fa-coins"></i>
+                        اعتبار :
+                    </small>
+                </div>
+                <div class="col-4">
+                    {{profile.get_balance_display}}
+                </div>
+                <div class="col-4 text-left">
+                        <a class="btn btn-xs btn-success my-1" style="font-size: 0.6em;" href="">
+                            <i class="fas fa-plus"></i>
+                        افزایش اعتبار
+                        </a>
+                </div>
+                <div class="w-100 my-1"></div>
+                <div class="col-2">
+                    <small class="text-muted">
+                        <i class="fas fa-home"></i>
+                        آدرس:
+                    </small>
+                </div>
+                <div class="col-10 item-text-box">
+                    {{profile.address}}
+                </div>
+                <div class="w-100 my-1"></div>
+            </div>
+        </div>
+        <div class="col-4 text-center">
+            {% if profile.profile_image %}
+                <img class="profile-image" style="max-width: 100px;border-radius: 50%;" src="{{ profile.profile_image.url }}" alt="">
+            {% endif %}
+        <div class="mt-4">
+            <a class="btn btn-secondary" style="font-size: 0.7em;" href="{% url 'accounts:profile_edit' %}">
+                <i class="fas fa-edit"></i>
+                ویرایش نمایه
+            </a>
+            <a class="btn btn-warning" style="font-size: 0.7em;" href="#">
+                <i class="fas fa-key"></i>
+                تغییر گذرواژه
+            </a>
+        </div>
+
+        </div>
+    </div>
+{% endblock %}

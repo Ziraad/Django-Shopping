@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'pooshak/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href='{% static 'pooshak/css/main.css' %}'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+
+    <title>مشخصات، قیمت و خرید {{ product.name }} </title>
+</head>
+<body>
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="" class="header-container-link">
+                <img src="{% static 'pooshak/images/logo.jpg' %}" alt="فروشگاه آنلاین" class="logo1">
+            </a>
+            <input type="text" class="header-search"  placeholder="جستجو در فروشگاه آنلاین">
+             {% if user.is_authenticated %}
+                <div class="dropdown">
+                      <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user logo-user"></i>
+                         {{ user.get_full_name }}
+                      </button>
+                      <div class="dropdown-menu dropdown-menu-account account" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#"> <i class="fas fa-coins"></i>
+                        اعتبار
+                        {{ user.profile.balance }}
+                          تومان
+                        </a>
+                        <a class="dropdown-item" href="#"><i class="far fa-address-card"></i>
+                             نمایه کاربری
+                        </a>
+                        <a class="dropdown-item" href="#"><i class="fas fa-ticket-alt"></i>
+                           سفارش های من
+                        </a>
+                        <a class="dropdown-item" href="{% url 'account:logout' %}"> <i class="fas fa-sign-out-alt"></i>
+                            خروج
+                        </a>
+                      </div>
+                </div>
+                 <a class="shopping-cart-link" href="#"><i class="fa fa-shopping-cart shopping-cart"></i></a>
+            {% else %}
+                <a class="btn btn-primary py-1 px-2 mr-3" href="{% url 'account:login' %}">
+                    <i class="fas fa-sign-in-alt"></i>
+                    ورود
+                </a>
+            {% endif %}
+        </div>
+    </header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-product">
+        <button class="navbar-toggler" type="button"  data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon open-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                 <li class="nav-item active ">
+                   <a class="nav-link" href="{% url 'pooshak:homepage' %}">صفحه اصلی</a>
+                 </li>
+                 <li class="nav-item dropdown-product">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">(current)</span>
+                      محصولات
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-product" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" href="#">گاوصندوق کاوه</a>
+                      <a class="dropdown-item" href="#">گاوصندوق سدید</a>
+                      <a class="dropdown-item" href="#">گاوصندوق اسلحه</a>
+                      <a class="dropdown-item" href="#">گاوصندوق گنجینه</a>
+                      <a class="dropdown-item" href="#">گاوصندوق کارکرده</a>
+                      <a class="dropdown-item" href="#">گاوصندوق ایران کاوه</a>
+                      <a class="dropdown-item" href="#">گاوصندوق گنجینه مهر پارس</a>
+                    </div>
+                 </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">مقالات</a>
+                  </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#">درباره ما</a>
+                  </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#">تماس با ما</a>
+                  </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid product-details-container">
+        <div class="detail-show">
+            <div class="detail-img">
+                <div class="detail-img-img">
+                    <img class="details-product-image-item origin-image-product" src="{{ product.pic.url }}" alt="">
+                    <div class="details-product-image-item detail-img-img-other-pic">
+                        <img class="other-pic-item" src="{{ product.pic.url}}" alt="0" >
+                        {% if product.pic1 %}
+                            <img class="other-pic-item" src="{{ product.pic1.url}}" alt="2">
+                        {% endif %}
+                        {% if product.pic2 %}
+                            <img class="other-pic-item" src="{{ product.pic2.url}}" alt="3">
+                        {% endif %}
+                        {% if product.pic3 %}
+                            <img class="other-pic-item" src="{{ product.pic3.url}}" alt="3">
+                        {% endif %}
+                        {% if product.pic4 %}
+                            <img class="other-pic-item" src="{{ product.pic4.url}}" alt="3">
+                        {% endif %}
+                        <h4 class="other-pic-item">...</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-details">
+                <h5 class="product-name">{{ product.name }}</h5>
+                <div class="product-brand">
+                    برند :
+                    {{ product.brand }}
+                </div>
+                <h6 class="product-attribute">ویژگی های محصول</h6>
+                <ul class="product-attribute-list" >
+                    <li class="product-attribute-item">جنس : {{ product.jens }}</li>
+                    <li class="product-attribute-item">طرح : {{ product.tarh }}</li>
+                    <li class="product-attribute-item">فرم : {{ product.form }}</li>
+                    <li class="product-attribute-item">کلاه : {{ product.kolah }}</li>
+                </ul>
+            </div>
+            <div class="detail-price">
+                <div class="detail-price-container">
+                    <div class="product-guarantee-esalat">
+                        <img class="guarantee-icon" src="{% static 'pooshak/icon4-150x150.png' %}" alt="">
+                        <h6 class="product-guarantee-esalat-title">گارانتی اصالت و سلامت فیزیکی کالا</h6>
+                    </div>
+                    <div class="detail-product-inventory">
+                        <img class="inventory-icon" src="{% static 'pooshak/inventory_icon.png' %}" alt="">
+                        <h6 class="detail-product-inventory-title">
+                            {% if product.inventory > 0 %}موجود در انبار فروشگاه
+                            {% else %}کالا موجود نمی باشد
+                            {% endif %}
+                        </h6>
+                    </div>
+                    <div class="detail-product-price">
+                        <h5 class="product-price-title text-danger">{{ product.price }} <span style="font-size: 14px">تومان</span></h5>
+                    </div>
+                    <div class="detail-product-add">
+                        <button type="button" class="btn btn-danger btn-block  btn-add-product">افزودن به سبد خرید</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container-fluid footer-container-fluid">
+            <div class="footer-container">
+                <h3 class="footer-title">ما را در شبکه های اجتماعی دنبال کنید</h3>
+                <ul class="footer-social">
+                    <li class="footer-social-item "><a class="footer-social-item-link" href="#"><i class="fab fa-twitter footer-social-item-link-twitter"></i></a></li>
+                    <li class="footer-social-item"><a class="footer-social-item-link footer-social-item-instagram" href="#"><i class="fab fa-instagram footer-social-item-link-instagram"></i></a></li>
+                    <li class="footer-social-item"><a class="footer-social-item-link" href="#"><i class="fab fa-facebook-square  footer-social-item-link-facebook"></i></a></li>
+                    <li class="footer-social-item"><a class="footer-social-item-link" href="#"><i class="fab fa-telegram  footer-social-item-link-telegram"></i></a></li>
+                    <li class="footer-social-item"><a class="footer-social-item-link" href="#"><i class="fab fa-whatsapp-square footer-social-item-link-whatsapp"></i></a></li>
+                </ul>
+                <p class="copyright"><i class="fa fa-copyright"></i> تمامی حقوق این سایت متعلق به گروه ZIRAAD می باشد.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+    <script src="{% static 'pooshak/js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'pooshak/js/popper.min.js' %}"></script>
+    <script src="{% static 'pooshak/js/bootstrap.min.js' %}"></script>
+</html>

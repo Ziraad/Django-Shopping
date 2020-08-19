@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'pooshak/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href='{% static 'pooshak/css/main.css' %}'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+    <script src="{% static 'pooshak/js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'pooshak/js/popper.min.js' %}"></script>
+    <script src="{% static 'pooshak/js/bootstrap.min.js' %}"></script>
+
+    <title>فروشگاه آنلاین</title>
+</head>
+<body>
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="" class="header-container-link">
+                <img src="{% static 'pooshak/images/logo.jpg' %}" alt="فروشگاه آنلاین" class="logo1">
+            </a>
+            <input type="text" class="header-search"  placeholder="جستجو در فروشگاه آنلاین">
+            {% if user.is_authenticated %}
+                <div class="dropdown">
+                      <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user logo-user"></i>
+                      </button>
+                      <div class="dropdown-menu dropdown-menu-account account" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#"><i class="far fa-address-card"></i>
+
+                                 {{ user.get_full_name }}
+                                 <br>
+                                 <br>
+                                 <span style="color: deepskyblue; padding-right: 20px">مشاهده حساب کاربری   ></span>
+
+                        </a>
+
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" href="#"> <i class="fas fa-coins"></i>
+                        اعتبار
+                        {{ user.profile.balance }}
+                          تومان
+                        </a>
+                          <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class="fas fa-ticket-alt"></i>
+                           سفارش های من
+                        </a>
+                          <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'account:logout' %}"> <i class="fas fa-sign-out-alt"></i>
+                            خروج
+                        </a>
+                      </div>
+                </div>
+                 <a class="shopping-cart-link" href="#"><i class="fa fa-shopping-cart shopping-cart"></i></a>
+            {% else %}
+                <a class="btn btn-primary py-1 px-2 mr-3" href="{% url 'account:login' %}">
+                    <i class="fas fa-sign-in-alt"></i>
+                    ورود
+                </a>
+            {% endif %}
+
+        </div>
+    </header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-product">
+        <button class="navbar-toggler" type="button"  data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon open-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                 <li class="nav-item active ">
+                   <a class="nav-link" href="{% url 'pooshak:homepage' %}">صفحه اصلی</a>
+                 </li>
+                 <li class="nav-item dropdown-product">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">(current)</span>
+                      محصولات
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-product" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" href="#">گاوصندوق کاوه</a>
+                      <a class="dropdown-item" href="#">گاوصندوق سدید</a>
+                      <a class="dropdown-item" href="#">گاوصندوق اسلحه</a>
+                      <a class="dropdown-item" href="#">گاوصندوق گنجینه</a>
+                      <a class="dropdown-item" href="#">گاوصندوق کارکرده</a>
+                      <a class="dropdown-item" href="#">گاوصندوق ایران کاوه</a>
+                      <a class="dropdown-item" href="#">گاوصندوق گنجینه مهر پارس</a>
+                    </div>
+                 </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">مقالات</a>
+                  </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#">درباره ما</a>
+                  </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#">تماس با ما</a>
+                  </li>
+            </ul>
+        </div>
+    </nav>
+    <main class="main">
+        <div class="container-fluid main-container">
+            <main class="main-sidebar" >
+
+            </main>
+            <main class="main-content">
+                {% for set in sport_set %}
+                    <a href="{% url 'pooshak:product_details' set.id %}" class="main-content-product-link" style="text-decoration: none">
+                        <div class="main-content-product">
+                            <img src="{{ set.pic.url }}" alt="{{ set.name }}" class="product-img">
+                            <span class="product-name">
+                                {{ set.name }}
+                            </span>
+                            <span class="product-price">
+                                {{ set.price }} تومان
+                            </span>
+                        </div>
+                    </a>
+                {% endfor %}
+            </main>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container-fluid footer-container-fluid">
+            <div class="footer-container">
+                <h3 class="footer-title">ما را در شبکه های اجتماعی دنبال کنید</h3>
+                <ul class="footer-social">
+                    <li class="footer-social-item "><a class="footer-social-item-link" href="#"><i class="fab fa-twitter footer-social-item-link-twitter"></i></a></li>
+                    <li class="footer-social-item"><a class="footer-social-item-link footer-social-item-instagram" href="#"><i class="fab fa-instagram footer-social-item-link-instagram"></i></a></li>
+                    <li class="footer-social-item"><a class="footer-social-item-link" href="#"><i class="fab fa-facebook-square  footer-social-item-link-facebook"></i></a></li>
+                    <li class="footer-social-item"><a class="footer-social-item-link" href="#"><i class="fab fa-telegram  footer-social-item-link-telegram"></i></a></li>
+                    <li class="footer-social-item"><a class="footer-social-item-link" href="#"><i class="fab fa-whatsapp-square footer-social-item-link-whatsapp"></i></a></li>
+                </ul>
+                <p class="copyright"><i class="fa fa-copyright"></i> تمامی حقوق این سایت متعلق به گروه ZIRAAD می باشد.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
